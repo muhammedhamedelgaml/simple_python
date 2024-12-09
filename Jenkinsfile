@@ -2,8 +2,8 @@ pipeline {
     agent any
         environment {
 
-      registry : "muhammedhamedelgaml/app_python"
-      dockerhubCreds : 'dockerhub'
+      registry = "muhammedhamedelgaml/app_python"
+      dockerhubCreds = 'dockerhub'
     }
     stages {
         stage('Build image') {
@@ -19,7 +19,7 @@ pipeline {
           }
         }
    
-   
+
     }
 
 
