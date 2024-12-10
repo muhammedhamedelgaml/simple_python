@@ -2,7 +2,6 @@ pipeline {
     agent any
     environment {
         registry = "muhammedhamedelgaml/app_python"
-        dockerhubCreds = credentials('dockerhub')  
     }
     stages {
         stage('Build image') {
