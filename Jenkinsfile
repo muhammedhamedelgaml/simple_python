@@ -17,7 +17,8 @@ pipeline {
             steps {
             withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {   
                 sh '''
-                       docker login --username $USERNAME --password $PASSWORD
+                       docker login --username $USERNAME --password $PASSWORD     
+                       docker push $registry           
                     '''
                 }
             }
@@ -26,7 +27,7 @@ pipeline {
     post {
         always {
             echo 'Pipeline finished! \n logout from docker'
-             
+   
             sh ' docker logout  '
         }
     }
