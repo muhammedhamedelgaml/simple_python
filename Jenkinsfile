@@ -18,15 +18,15 @@ pipeline {
      stage('Push image') {
       steps{
           script{
-             sh ' echo $dockerhubCreds_PSW | docker login -u $dockerhubCreds_USR --password-stdin '
-
+            //  sh ' echo $dockerhubCreds_PSW | docker login -u $dockerhubCreds_USR --password-stdin '
+             withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+            sh  '   docker login --username $USERNAME --password $PASSWORD  '
             //  docker.withRegistry('', dockerhubCreds )
+
             // def image = docker.image("${registry}")
             // image.push()
           }
         }
-     }
-
     }
 
 
