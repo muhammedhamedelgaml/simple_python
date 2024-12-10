@@ -19,7 +19,8 @@ pipeline {
       steps{
           script{
              docker.withRegistry('',dockerhubCreds)
-             push("muhammedhamedelgaml/app_python:v13")
+            def image = docker.image("${registry}:v13")
+            image.push()
           }
         }
      }
