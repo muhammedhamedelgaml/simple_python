@@ -17,7 +17,7 @@ pipeline {
    
      stage('Push image') {
       steps{
-        
+                steps{
             //  sh ' echo $dockerhubCreds_PSW | docker login -u $dockerhubCreds_USR --password-stdin '
              withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
             sh  '   docker login --username $USERNAME --password $PASSWORD  '
@@ -26,7 +26,7 @@ pipeline {
             // def image = docker.image("${registry}")
             // image.push()
           }
-        
+                }
     }
      }
 
@@ -35,4 +35,6 @@ pipeline {
             echo 'Pipeline finished!'
         }
     }
+}
+
 }
