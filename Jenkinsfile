@@ -16,10 +16,9 @@ pipeline {
    
         stage('Push image') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub')]) {
                     sh '''
-                        echo $PASSWORD | docker login --username $USERNAME --password-stdin
-                        # docker login --username $USERNAME --password $PASSWORD
+                       docker login --username $USERNAME --password $PASSWORD
                     '''
                 }
             }
@@ -27,7 +26,9 @@ pipeline {
     }
     post {
         always {
-            echo 'Pipeline finished!'
+            echo 'Pipeline finished! \n logout from docker'
+             
+            sh ' docker logout  '
         }
     }
 }
