@@ -3,7 +3,7 @@ pipeline {
         environment {
 
       registry = "muhammedhamedelgaml/app_python"
-      dockerhubCreds = 'dockerhub'
+      dockerhubCreds = credentials('dockerhub')
     }
     stages {
         stage('Build image') {
@@ -18,9 +18,11 @@ pipeline {
      stage('Push image') {
       steps{
           script{
-             docker.withRegistry('', dockerhubCreds )
-            def image = docker.image("${registry}")
-            image.push()
+             sh ' echo $dockerhubCreds_PSW | docker login -u $dockerhubCreds_USR --password-stdin '
+
+            //  docker.withRegistry('', dockerhubCreds )
+            // def image = docker.image("${registry}")
+            // image.push()
           }
         }
      }
