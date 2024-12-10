@@ -9,7 +9,8 @@ pipeline {
         stage('Build image') {
         steps{
           script{
-            image = docker.build("${registry}:v${BUILD_NUMBER}")  
+            echo "BUILD DONE"
+            // image = docker.build("${registry}:v${BUILD_NUMBER}")  
           }
         }
         }
@@ -18,7 +19,7 @@ pipeline {
       steps{
           script{
              docker.withRegistry(dockerhubCreds)
-             image.push("$BUILD_NUMBER")
+             push("muhammedhamedelgaml/app_python:v13")
           }
         }
      }
