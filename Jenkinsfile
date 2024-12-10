@@ -18,8 +18,8 @@ pipeline {
      stage('Push image') {
       steps{
           script{
-             docker.withRegistry('',dockerhubCreds)
-            def image = docker.image("${registry}:v13")
+             docker.withRegistry('', dockerhubCreds )
+            def image = docker.image("${registry}")
             image.push()
           }
         }
