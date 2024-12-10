@@ -3,7 +3,7 @@ pipeline {
         environment {
 
       registry = "muhammedhamedelgaml/app_python"
-      dockerhubCreds = 'dockerhub'
+      // dockerhubCreds = 'dockerhub'
     }
     stages {
         stage('Build image') {
@@ -18,9 +18,11 @@ pipeline {
      stage('Push image') {
       steps{
           script{
-             docker.withRegistry('',dockerhubCreds)
-            def image = docker.image("${registry}:v13")
-            image.push()
+  withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+            sh """
+                   docker login --username $USERNAME --password $PASSWORD 
+                   docker push muhammedhamedelgaml/simple_python:v13
+               """
           }
         }
      }
