@@ -1,0 +1,6 @@
+- name: install Docker and run docker image for weather App 
+  hosts: vms 
+  gather_facts: no 
+  tasks: 
+   - name: test echo 
+     ansible.builtin.command: ls  
