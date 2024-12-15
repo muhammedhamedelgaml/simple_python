@@ -12,18 +12,17 @@ pipeline {
                 }
             }
         }
-   
+
         stage('Push image') {
             steps {
-            withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {   
-                sh '''
-                       docker login --username $USERNAME --password $PASSWORD     
+                withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {   
+                    sh '''
+                        docker login --username $USERNAME --password $PASSWORD     
                     '''
                 }
             }
         }
 
-    stages {
         stage("Ansible Deploy to vagrant VMs") {
             steps {
                 script {
@@ -37,13 +36,11 @@ pipeline {
             }
         }
     }
-}
 
-    
     post {
         always {
             echo 'Pipeline finished! \n logout from docker'
-            sh ' docker logout  '
+            sh 'docker logout'
         }
     }
 }
