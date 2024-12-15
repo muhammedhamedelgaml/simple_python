@@ -28,12 +28,14 @@ pipeline {
                 script {
                     // sh ' ansible -i ansible/inventory vms -m ping '
                 //   sh ' ansible-playbook -i ansible/inventory  ansible/playbook.yml '
+            ansiblePlaybook({
             inventory     : 'ansible/inventory',
             playbook      :  'ansible/playbook.yml',
             installation  :  'ansible',
             colorized     :   false ,
             credentialsId :    'vm01', // username and private key of instance saved at jenkins credentials 
             disableHostKeyChecking : true ,
+                })
                 }
             }
         }
