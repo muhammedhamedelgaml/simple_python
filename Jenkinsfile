@@ -22,7 +22,7 @@ pipeline {
                 }
             }
         }
-        
+
     stages {
         stage("Ansible Deploy to vagrant VMs") {
             steps {
@@ -39,7 +39,7 @@ pipeline {
     }
 }
 
-    }
+    
     post {
         always {
             echo 'Pipeline finished! \n logout from docker'
