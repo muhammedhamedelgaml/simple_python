@@ -26,9 +26,9 @@ pipeline {
    stage("Ansible Deploy to vagrant VMS"){
       steps{
         ansiblePlaybook({
-            credentialsId : 'vm01' ,
             inventory     : 'ansible/inventory',
             playbook      :  'ansible/playbook.yml',
+            credentialsId : 'vm01' ,
             colorized: false 
         })
       }
