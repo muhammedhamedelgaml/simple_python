@@ -25,12 +25,14 @@ pipeline {
 
    stage("Ansible Deploy to vagrant VMS"){
       steps{
+        script {
         ansiblePlaybook({
             inventory     : 'ansible/inventory',
             playbook      :  'ansible/playbook.yml',
             credentialsId : 'vm01' ,
             colorized: false 
         })
+      }
       }
   } 
 
