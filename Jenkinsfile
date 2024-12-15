@@ -22,19 +22,22 @@ pipeline {
                 }
             }
         }
-
-   stage("Ansible Deploy to vagrant VMS"){
-      steps{
-        script {
-        ansiblePlaybook({
-            inventory     : 'ansible/inventory',
-            playbook      :  'ansible/playbook.yml',
-            credentialsId : 'vm01' ,
-            colorized: false 
-        })
-      }
-      }
-  } 
+        
+    stages {
+        stage("Ansible Deploy to vagrant VMs") {
+            steps {
+                script {
+                    ansiblePlaybook(
+                        credentialsId: 'vm01',
+                        inventory: 'ansible/inventory',
+                        playbook: 'ansible/playbook.yml',
+                        colorized: false
+                    )
+                }
+            }
+        }
+    }
+}
 
     }
     post {
