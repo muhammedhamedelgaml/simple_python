@@ -26,16 +26,14 @@ pipeline {
         stage("Ansible Deploy to vagrant VMs") {
             steps {
                 script {
-                    // sh ' ansible -i ansible/inventory vms -m ping '
-                //   sh ' ansible-playbook -i ansible/inventory  ansible/playbook.yml '
-            ansiblePlaybook({
-            inventory     : 'ansible/inventory',
-            playbook      :  'ansible/playbook.yml',
-            installation  :  'ansible',
-            colorized     :   false ,
-            credentialsId :    'vm01', // username and private key of instance saved at jenkins credentials 
-            disableHostKeyChecking : true ,
-                })
+                    ansiblePlaybook(
+                        inventory: 'ansible/inventory',  // Path to your inventory file
+                        playbook: 'ansible/playbook.yml',  // Path to your playbook
+                        installation: 'ansible',  // Ensure Ansible is installed in your Jenkins environment
+                        colorized: false,  // Set to true if you want color output in the logs
+                        credentialsId: 'vm01',  // Credentials ID in Jenkins (contains SSH private key and username)
+                        disableHostKeyChecking: true  // Disables the StrictHostKeyChecking to avoid SSH prompts
+                    )
                 }
             }
         }
