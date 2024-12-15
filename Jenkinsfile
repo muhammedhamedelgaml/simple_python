@@ -18,16 +18,26 @@ pipeline {
             withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {   
                 sh '''
                        docker login --username $USERNAME --password $PASSWORD     
-                       docker push $registry           
                     '''
                 }
             }
         }
+
+   stage("Ansible Deploy to vagrant VMS"){
+      steps{
+        ansiblePlaybook({
+            credentialsId : 'vm01' ,
+            inventory     : 'ansible/inventory',
+            playbook      :  'ansible/playbook.yml',
+            colorized: false 
+        })
+      }
+  } 
+
     }
     post {
         always {
             echo 'Pipeline finished! \n logout from docker'
-   
             sh ' docker logout  '
         }
     }
