@@ -30,7 +30,7 @@ pipeline {
                         credentialsId: 'vm01',
                         inventory: 'ansible/inventory',
                         playbook: 'ansible/playbook.yml',
-                        host_key_checking = false ,
+                        disableHostKeyChecking : true ,
                         colorized: false
                     )
                 }
