@@ -26,13 +26,7 @@ pipeline {
         stage("Ansible Deploy to vagrant VMs") {
             steps {
                 script {
-                    ansiblePlaybook(
-                        credentialsId: 'vm01',
-                        inventory: 'ansible/inventory',
-                        playbook: 'ansible/playbook.yml',
-                        disableHostKeyChecking : true ,
-                        colorized: false
-                    )
+                  sh ' ansible-playbook -i ansible/inventory  ansible/playbook.yml '
                 }
             }
         }
