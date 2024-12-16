@@ -218,6 +218,9 @@ POST  // make integration with slack
     }   
 ```
 
-## Screenshot
-![Jenkins Pipeline stage view EX.](/screenshots/stage_view.png)
+## Screenshot of SLACK 
 ![SLACK ](/screenshots/slack.png)
+
+
+## Screenshot of stage view 
+![Jenkins Pipeline stage view EX.](/screenshots/stage_view.png)
