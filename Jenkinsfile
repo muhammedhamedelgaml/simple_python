@@ -13,7 +13,7 @@ pipeline {
             steps {
                 script {
 
-                      sh ' docker build -t ${image_name}:${BUILD_NUMBER} '
+                      sh ' docker build -t ${image_name}:${BUILD_NUMBER} . '
                 }
             }
         }
