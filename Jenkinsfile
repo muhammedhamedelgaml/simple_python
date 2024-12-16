@@ -30,7 +30,7 @@ pipeline {
                     //  sh ' ansible-playbook -i ansible/inventory  ansible/playbook.yml '
             ansiblePlaybook({
             inventory     : 'ansible/inventory',
-            playbook      :  'ansible/site.yml',
+            playbook      :  'ansible/playbook.yml',
             installation  :  'ansible',
             colorized     :   false ,
         })
