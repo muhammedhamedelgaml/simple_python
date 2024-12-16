@@ -25,16 +25,6 @@ The project automates the deployment of a weather application using Jenkins and 
 - **Automated Deployment with Ansible**: Ansible playbooks manage the deployment process on the target machine.
 - **Slack Notifications**: Integration with Slack to notify about pipeline status.
 
-## Prerequisites
-
-Before running the pipeline, make sure you have the following tools and services:
-
-- **Jenkins**: For managing the pipeline.
-- **Docker**: For containerizing the app and running containers.
-- **Ansible**: For automating the setup and deployment on target machines.
-- **Slack**: To send notifications about the build status.
-
-## Setup Instructions
 
 ### 1. Dockerize the Weather App
 
