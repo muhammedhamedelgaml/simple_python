@@ -1,9 +1,9 @@
 # Weather App - Jenkins Pipeline Deployment
 
-This project demonstrates how to **build** and **deploy** a weather application on target machines using a **Jenkins pipeline**. The process includes containerizing the app with Docker, using Ansible to automate the installation of Docker on the target machine, pulling the Docker image from Docker Hub, and running the container. Additionally, the pipeline is integrated with **Slack** to notify about the build status (pass/fail).
+This project demonstrates how to **build** and **deploy** a weather application on target machines using a **Jenkins pipeline**. The process includes containerizing the app with Docker, Ansible to automate the installation of Docker on the target machine, pulling the Docker image from Docker Hub, and running the container. Additionally, the pipeline is integrated with **Slack** to notify about the build status (pass/fail).
 
 ## Technologies Used
-
+- **Python**
 - **Jenkins**: For creating and managing the continuous integration and continuous deployment (CI/CD) pipeline.
 - **Docker**: To containerize the Weather App.
 - **Ansible**: To automate the deployment on target machines.
@@ -152,4 +152,75 @@ download image and run container with dynamic values
         published_ports:
           - "5000:5000"
 
+```
+### 3. Jenkins pipeline
+
+```BUILD stage
+pipeline {
+    agent any
+    environment {
+        image_name = "muhammedhamedelgaml/app_python"
+    }
+    stages {
+        stage('Build image') {
+            steps {
+                script {
+                      echo "BUILD DONE"
+                      sh ' docker build -t ${image_name}:${BUILD_NUMBER} . '
+                }
+            }
+}       
+```
+```PUSH IMAGE stage
+pipeline {
+    agent any
+    environment {
+        image_name = "muhammedhamedelgaml/app_python"
+    }
+        stage('Push image') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {   
+                    sh '''
+                        docker login --username $USERNAME --password $PASSWORD
+                        docker push ${image_name}:${BUILD_NUMBER}
+
+                    '''
+
+                }
+            }
+        }      
+```
+```SETUP & DEPLOY stage  use ansible plugin to pass dynamic value
+        stage("Ansible Deploy to vagrant VMs") {
+            steps {
+                script {
+                    ansiblePlaybook(
+                        inventory     : 'ansible/inventory',
+                        playbook      : 'ansible/site.yml',
+                        installation  : 'ansible',  
+                        colorized     : false,
+                        extraVars     : [
+                            IMAGE: "${image_name}",
+                            TAG: "${BUILD_NUMBER}"
+                        ]
+                    )
+                }
+            }
+        }
+    }     
+```
+```POST  // make integration with slack
+    post {
+        always {
+            echo 'Pipeline finished! \n logging out from docker'
+            sh 'docker logout'
+
+              
+            echo 'slack notification.'
+            slackSend channel: '#cicdjenkins',
+            color:  COLOR_MAP[currentBuild.currentResult],
+            message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n for more info visit : ${env.BUILD_URL} " 
+        
+        }
+    }   
 ```
