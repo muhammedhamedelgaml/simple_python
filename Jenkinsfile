@@ -2,7 +2,6 @@ pipeline {
     agent any
     environment {
         registry = "muhammedhamedelgaml/app_python"
-        ansible_cred = credentials('priv_key')  
     }
     stages {
         stage('Build image') {
@@ -27,7 +26,7 @@ pipeline {
         stage("Ansible Deploy to vagrant VMs") {
             steps {
                 script {
-                     sh ' ansible -i ansible/inventory vms --private-key=$ansible_cred -m ping '
+                     sh ' ansible -i ansible/inventory vms --private-key=/var/lib/jenkins/.ssh/id_ODC -m ping '
                   // sh ' ansible-playbook -i ansible/inventory  ansible/playbook.yml '
                 }
             }
