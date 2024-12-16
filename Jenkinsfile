@@ -7,13 +7,14 @@ pipeline {
     agent any
     environment {
         image_name = "muhammedhamedelgaml/app_python"
+        tag = "31"
     }
     stages {
         stage('Build image') {
             steps {
                 script {
 
-                      sh ' docker build -t ${image_name}:${BUILD_NUMBER} . '
+                    //   sh ' docker build -t ${image_name}:${BUILD_NUMBER} . '
                 }
             }
         }
@@ -23,12 +24,12 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {   
                     sh '''
                         docker login --username $USERNAME --password $PASSWORD
-                        docker push ${image_name}:${BUILD_NUMBER}
+                        docker push ${image_name}:${tag}
                     '''
                 }
             }
         }
-
+              
         stage("Ansible Deploy to vagrant VMs") {
             steps {
                 script {
@@ -39,7 +40,7 @@ pipeline {
                         colorized     : false,
                         extraVars     : [
                             IMAGE: "${image_name}",
-                            TAG: "${BUILD_NUMBER}"
+                            TAG: "${tag}"
                         ]
                     )
                 }
