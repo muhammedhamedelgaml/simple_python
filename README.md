@@ -8,7 +8,6 @@ This project demonstrates how to **build** and **deploy** a weather application 
 - **Docker**: To containerize the Weather App.
 - **Ansible**: To automate the deployment on target machines.
 - **Slack**: For sending notifications about the build status.
-- **Weather API**: Used to fetch real-time weather data.
 
 ## Project Overview
 
@@ -49,3 +48,82 @@ RUN pip install -r /app/requirements.txt
 EXPOSE 5000
 CMD [ "python" , "/app/app.py" ]
 ```
+
+### 2. write ansible-playbook install Docker engine on target machine 
+
+install Docker engine on target machine 
+```ansible-playbook
+---
+- name: install Docker 
+  hosts: vms 
+  become: yes 
+  gather_facts: no 
+  tasks: 
+    - name: Update apt package index
+      apt:
+        update_cache: yes
+
+    - name: Install required dependencies
+      apt:
+        name:
+          - ca-certificates
+          - curl
+        state: present
+
+    - name: Create keyrings directory
+      file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: '0755'
+
+    - name: Download Docker's official GPG key
+      get_url:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        dest: /etc/apt/keyrings/docker.asc
+        mode: '0644'
+
+    - name: Add Docker repository to apt sources list
+      shell: |
+        echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+        $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+      args:
+        creates: /etc/apt/sources.list.d/docker.list
+
+    - name: Update apt package index after adding Docker repository
+      apt:
+        update_cache: yes
+
+    - name: Install Docker Engine
+      apt:
+        name: docker-ce
+        state: present
+
+    - name: Ensure Docker service is started and enabled
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    # - name: Verify Docker installation
+    #   command: docker --version
+    #   register: docker_version
+    #   changed_when: false
+
+    # - name: Display Docker version
+    #   debug:
+    #     msg: "Docker version installed: {{ docker_version.stdout }}"
+
+
+    - name: Ensure the docker group exists
+      group:
+        name: docker
+        state: present
+
+    - name: Add the user to the docker group
+      user:
+        name: "{{ ansible_user }}"  # ubuntu
+        group: docker
+        append: yes    
+
+```
+
