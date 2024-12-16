@@ -1,3 +1,8 @@
+def COLOR_MAP = [
+  'SUCCESS' : 'good',
+  'FAILURE' : 'danger'
+]
+
 pipeline {
     agent any
     environment {
@@ -46,6 +51,13 @@ pipeline {
         always {
             echo 'Pipeline finished! \n logging out from docker'
             sh 'docker logout'
+
+            always  
+            echo 'slack notification.'
+            slackSend channel: '#cicdjenkins',
+            color:  COLOR_MAP[currentBuild.currentResult],
+            message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n for more info visit : ${env.BUILD_URL} " 
+        
         }
     }
 }
