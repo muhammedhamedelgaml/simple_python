@@ -218,7 +218,8 @@ POST  // make integration with slack
     }   
 ```
 
+## Screenshot
 ```markdown
-![Jenkins Pipeline stage view EX.](screenshots/stage_view.png)
-![SLACK ](screenshots/slack.png)
+![Jenkins Pipeline stage view EX.](/screenshots//stage_view.png)
+![SLACK ](/screenshots/slack.png)
 ```
