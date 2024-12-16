@@ -1,14 +1,14 @@
 pipeline {
     agent any
     environment {
-        registry = "muhammedhamedelgaml/app_python"
+        image_name = "muhammedhamedelgaml/app_python"
     }
     stages {
         stage('Build image') {
             steps {
                 script {
                     echo "BUILD DONE"
-                    // docker.build("${registry}:v${BUILD_NUMBER}")
+                    dockerimage = docker.build("${image_name}:${BUILD_NUMBER}")
                 }
             }
         }
@@ -17,8 +17,9 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {   
                     sh '''
-                        docker login --username $USERNAME --password $PASSWORD     
+                        docker login --username $USERNAME --password $PASSWORD
                     '''
+                    dockerimage.push()
                 }
             }
         }
@@ -26,14 +27,16 @@ pipeline {
         stage("Ansible Deploy to vagrant VMs") {
             steps {
                 script {
-                    //  sh ' ansible -i ansible/inventory vms -m ping '
-                    //  sh ' ansible-playbook -i ansible/inventory  ansible/playbook.yml '
-            ansiblePlaybook(
-            inventory     : 'ansible/inventory',
-            playbook      :  'ansible/site.yml',
-            installation  :  'ansible',
-            colorized     :   false ,
-                )
+                    ansiblePlaybook(
+                        inventory     : 'ansible/inventory',
+                        playbook      : 'ansible/site.yml',
+                        installation  : 'ansible',  
+                        colorized     : false,
+                        extraVars     : [
+                            IMAGE: "${image_name}",
+                            TAG: "${BUILD_NUMBER}"
+                        ]
+                    )
                 }
             }
         }
@@ -41,7 +44,7 @@ pipeline {
 
     post {
         always {
-            echo 'Pipeline finished! \n logout from docker'
+            echo 'Pipeline finished! \n logging out from docker'
             sh 'docker logout'
         }
     }
