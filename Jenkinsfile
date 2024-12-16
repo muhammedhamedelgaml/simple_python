@@ -26,7 +26,7 @@ pipeline {
         stage("Ansible Deploy to vagrant VMs") {
             steps {
                 script {
-                     sh ' ansible -i ansible/inventory vms -m ping '
+                    //  sh ' ansible -i ansible/inventory vms -m ping '
                      sh ' ansible-playbook -i ansible/inventory  ansible/playbook.yml '
                 }
             }
