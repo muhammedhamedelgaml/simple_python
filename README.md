@@ -154,7 +154,7 @@ download image and run container with dynamic values
 
 ```
 ### 3. Jenkins pipeline
-
+BUILD stage
 ```BUILD stage
 pipeline {
     agent any
@@ -171,6 +171,7 @@ pipeline {
             }
 }       
 ```
+PUSH IMAGE stage
 ```PUSH IMAGE stage
 pipeline {
     agent any
@@ -190,7 +191,8 @@ pipeline {
             }
         }      
 ```
-```SETUP & DEPLOY stage  use ansible plugin to pass dynamic value
+SETUP & DEPLOY stage  use ansible plugin to pass dynamic value
+```SETUP & DEPLOY stage  
         stage("Ansible Deploy to vagrant VMs") {
             steps {
                 script {
@@ -209,7 +211,8 @@ pipeline {
         }
     }     
 ```
-```POST  // make integration with slack
+POST  // make integration with slack
+```
     post {
         always {
             echo 'Pipeline finished! \n logging out from docker'
