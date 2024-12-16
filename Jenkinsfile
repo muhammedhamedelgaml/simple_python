@@ -28,12 +28,12 @@ pipeline {
                 script {
                     //  sh ' ansible -i ansible/inventory vms -m ping '
                     //  sh ' ansible-playbook -i ansible/inventory  ansible/playbook.yml '
-            ansiblePlaybook({
+            ansiblePlaybook(
             inventory     : 'ansible/inventory',
             playbook      :  'ansible/playbook.yml',
             installation  :  'ansible',
             colorized     :   false ,
-        })
+        )
                 }
             }
         }
