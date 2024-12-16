@@ -1,5 +1,4 @@
 ---
-- ansible.builtin.import_playbook: 
-    - playbook_install_docker.yml
-    - playbook_run_container.yml
+- ansible.builtin.import_playbook:  playbook_install_docker.yml
+- ansible.builtin.import_playbook:  playbook_Run_container.yml
   
