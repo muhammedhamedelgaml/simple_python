@@ -13,7 +13,7 @@ pipeline {
         stage('Build image') {
             steps {
                 script {
-
+                      echo "BUILD DONE"
                     //   sh ' docker build -t ${image_name}:${BUILD_NUMBER} . '
                 }
             }
