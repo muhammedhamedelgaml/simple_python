@@ -7,7 +7,7 @@ pipeline {
     agent any
     environment {
         image_name = "muhammedhamedelgaml/app_python"
-        tag = "31"
+        tag = 31
     }
     stages {
         stage('Build image') {
