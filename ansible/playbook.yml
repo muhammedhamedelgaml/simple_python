@@ -49,14 +49,14 @@
         state: started
         enabled: yes
 
-    - name: Verify Docker installation
-      command: docker --version
-      register: docker_version
-      changed_when: false
+    # - name: Verify Docker installation
+    #   command: docker --version
+    #   register: docker_version
+    #   changed_when: false
 
-    - name: Display Docker version
-      debug:
-        msg: "Docker version installed: {{ docker_version.stdout }}"
+    # - name: Display Docker version
+    #   debug:
+    #     msg: "Docker version installed: {{ docker_version.stdout }}"
 
 
     - name: Ensure the docker group exists
