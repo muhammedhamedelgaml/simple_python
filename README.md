@@ -127,3 +127,29 @@ install Docker engine on target machine
 
 ```
 
+### 2. write ansible-playbook for download image and run container
+
+download image and run container with dynamic values  
+```ansible-playbook
+---
+- name: fetch docker image run container for weather App 
+  hosts: vms 
+  become: yes 
+  gather_facts: no 
+  tasks: 
+    - name: Pull the Docker image
+      docker_image:
+        name: "{{IMAGE}}"
+        source: pull
+        tag: "{{TAG}}"
+
+    - name: Run a container from the image
+      docker_container:
+        name: weather-container
+        image: "{{ IMAGE }}:{{ TAG }}"
+        state: started
+        restart_policy: unless-stopped
+        published_ports:
+          - "5000:5000"
+
+```
