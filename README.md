@@ -217,3 +217,6 @@ POST  // make integration with slack
         }
     }   
 ```
+
+```markdown
+![Jenkins Pipeline stage view EX.](screenshots/Screenshot from 2024-12-17 01-32-59.png)
