@@ -12,8 +12,8 @@ pipeline {
         stage('Build image') {
             steps {
                 script {
-                    echo "BUILD DONE"
-                    dockerimage = docker.build("${image_name}:${BUILD_NUMBER}")
+
+                      sh ' docker build -t ${image_name}:${BUILD_NUMBER} '
                 }
             }
         }
@@ -23,8 +23,8 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {   
                     sh '''
                         docker login --username $USERNAME --password $PASSWORD
+                        docker push ${image_name}:${BUILD_NUMBER}
                     '''
-                    dockerimage.push()
                 }
             }
         }
@@ -52,7 +52,7 @@ pipeline {
             echo 'Pipeline finished! \n logging out from docker'
             sh 'docker logout'
 
-            always  
+              
             echo 'slack notification.'
             slackSend channel: '#cicdjenkins',
             color:  COLOR_MAP[currentBuild.currentResult],
