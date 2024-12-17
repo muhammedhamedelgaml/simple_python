@@ -1,4 +1,4 @@
-# Weather App - Jenkins Pipeline Deployment
+# Weather App 
 
 This project demonstrates how to **build** and **deploy** a weather application on target machines using a **Jenkins pipeline**. The process includes containerizing the app with Docker, Ansible to automate the installation of Docker on the target machine, pulling the Docker image from Docker Hub, and running the container. Additionally, the pipeline is integrated with **Slack** to notify about the build status (pass/fail).
 
